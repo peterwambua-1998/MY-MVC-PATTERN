@@ -6,13 +6,15 @@ use App\Container;
 use App\Services\InvoiceService;
 
 class HomeController {
+    public function __construct(private InvoiceService $invoiceService) {
+        
+    }
+
     public function index()
     {
-        $container = new Container;
 
-        $invoice =  $container->get(InvoiceService::class);
 
-        echo $invoice->charge(100, 'amount');
+        echo $this->invoiceService->charge(100, 'amount');
 
         //$total = $container->get(InvoiceService::class)->charge(100, 'amount');
 

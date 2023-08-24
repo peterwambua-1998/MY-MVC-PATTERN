@@ -4,10 +4,15 @@ namespace App\Controller;
 
 use App\View;
 use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mime\Email;
 
 class UserController {
+    public function __construct(private MailerInterface $mailer) {
+        
+    }
+
     public function create ()
     {
         return View::render('users/create');
@@ -26,10 +31,8 @@ class UserController {
                      ->to($user_email)
                      ->subject('welcome')
                      ->html($email_page);
-        $dsn = "smtp://ff850dabb5d629:dbb06c86084162@sandbox.smtp.mailtrap.io:2525";
-        $transport = Transport::fromDsn($dsn);
-        $mailer = new Mailer($transport);
-        $mailer->send($email);
+        
+        $this->mailer->send($email);
 
         return View::render('users/welcome');
 

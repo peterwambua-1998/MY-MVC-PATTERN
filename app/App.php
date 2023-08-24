@@ -3,12 +3,18 @@
 namespace App;
 
 
+
+use App\Interface\PaymentGatewayServiceInterface;
+use App\Services\PaymentGatewayService;
+
+
 class App {
     static public ?App $instance = null;
     static public ?DB $db = null;
     static private ?Route $router = null;
+    private ?Container $container = null;
 
-    private function __construct(Route $router) {
+    private function __construct(Route $router, Container $container) {
         if (self::$db == null) {
             self::$db = DB::instantiate();
         }
@@ -17,13 +23,23 @@ class App {
             self::$router = $router;
         }
 
+        if ($this->container === null) {
+            $this->container = $container;
+        }
+
+  
+
+       
+
         
+
+
     }
 
-    static public function create(Route $router)
+    static public function create(Route $router, Container $container)
     {
         if (self::$instance === null) {
-            self::$instance = new App($router);
+            self::$instance = new App($router, $container);
         }
 
         return self::$instance;

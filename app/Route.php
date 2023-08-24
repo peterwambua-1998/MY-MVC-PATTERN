@@ -7,7 +7,7 @@ use App\Exception\RouteNotFoundException;
 class Route {
     private array $routes = [];
 
-    public function __construct() {
+    public function __construct(private Container $container) {
         
     }
 
@@ -54,7 +54,7 @@ class Route {
                 throw new RouteNotFoundException("404 not found");
             }
 
-            $class = new $class;
+            $class = $this->container->get($class);
 
             return call_user_func_array([$class, $method],[]);
         }

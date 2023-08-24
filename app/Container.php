@@ -10,31 +10,42 @@ use ReflectionNamedType;
 use ReflectionUnionType;
 
 class Container implements ContainerInterface  {
-    private array $entries = [];
+    public array $entries = [];
 
     public function get(string $id)
     {
         if ($this->has($id)) {
             $entry = $this->entries[$id];
+            if (is_callable($this->entries[$id])) {
+                return $entry($this);
+            }
+
+            $id = $entry;
             
-            return $entry($this);
         }
         return $this->resolve($id);
+    }
+
+    public function getConcrete($id) 
+    {
+        return $this->entries[$id];
     }
 
     public function has(string $id): bool {
         return isset($this->entries[$id]);
     }
 
-    public function set(string $id, $concrete): void
+    public function set(string $id, callable $concrete)
     {
         $this->entries[$id] = $concrete;
     }
 
     public function resolve(string $id)
     {
+        
         // 1. get the reflection class
         $reflection_class = new ReflectionClass($id);
+
 
         if (!$reflection_class->isInstantiable()) {
             throw new Exception('class ' . $id . ' is not instaintiable');
@@ -54,10 +65,8 @@ class Container implements ContainerInterface  {
         }
 
         $dependancies = [];
-
-
-
-        foreach ($parameters as $key => $param) {
+        
+        $dependancies = array_map(function($param) use ($id) {
             $name = $param->getName();
             $type = $param->getType();
 
@@ -71,11 +80,13 @@ class Container implements ContainerInterface  {
 
             if ($type instanceof ReflectionNamedType && ! $type->isBuiltin()) {
                 // instantiate the class using container
-                $r = $this->resolve($type->getName());
-                $dependancies[] = $r;
+                
+                return $this->get($type->getName());
             }
 
-        }
+        }, $parameters);
+        
+        
 
         return $reflection_class->newInstanceArgs($dependancies);
         
