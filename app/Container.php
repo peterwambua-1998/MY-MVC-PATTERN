@@ -46,6 +46,11 @@ class Container implements ContainerInterface  {
         // 1. get the reflection class
         $reflection_class = new ReflectionClass($id);
 
+        // to resolve the db instance once
+        if ($id == "App\DB") {
+            return DB::instantiate();
+        } 
+
 
         if (!$reflection_class->isInstantiable()) {
             throw new Exception('class ' . $id . ' is not instaintiable');

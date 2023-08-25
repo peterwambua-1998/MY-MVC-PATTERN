@@ -27,13 +27,6 @@ class App {
             $this->container = $container;
         }
 
-  
-
-       
-
-        
-
-
     }
 
     static public function create(Route $router, Container $container)

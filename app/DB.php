@@ -3,12 +3,13 @@
 namespace App;
 
 class DB {
-    static private ?\PDO $instance = null;
+    static private ?\PDO $pdo = null;
+    static private ?DB $instance = null;
 
     private function __construct() 
     {
         try {
-            self::$instance = new \PDO(
+            self::$pdo = new \PDO(
                 "mysql:host=".$_ENV['DB_HOST'].";dbname=".$_ENV['DB_DATABASE'],
                 $_ENV['DB_USER'],
                 $_ENV['DB_PASS']
@@ -20,11 +21,16 @@ class DB {
 
     static public function instantiate()
     {
-        if (self::$instance === null) {
-            return new DB();
+        if (self::$pdo === null) {
+            return self::$instance = new DB();
         }
 
         return self::$instance;
+    }
+
+    public function getPDO()
+    {
+        return self::$pdo;
     }
 
 }
