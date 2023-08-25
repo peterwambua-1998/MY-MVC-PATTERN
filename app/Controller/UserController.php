@@ -8,6 +8,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mime\Email;
 use App\DB;
+use App\Model\User;
 use DateTime;
 
 class UserController {
@@ -25,21 +26,7 @@ class UserController {
         $name = $_POST['name'];
         $user_email = $_POST['email'];
 
-        $db = $this->db->getPDO();
-
-        try {
-            $db->beginTransaction();
-
-            $newUserStmt = $db->prepare(
-                'INSERT INTO users (email, full_name, is_active, created_at) VALUES (?,?,?, NOW())'
-            );
-
-            $newUserStmt->execute([$user_email, $name, 1]);
-            
-        } catch (\PDOException $th) {
-            echo $th->getMessage();
-        }
-
+        $userID = (new User($this->db))->create($name, $user_email);
 
         $email_page = file_get_contents(__DIR__ . '/../../views/users/email.php');
 
