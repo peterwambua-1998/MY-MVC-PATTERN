@@ -16,9 +16,16 @@ class UserController {
         
     }
 
+    public function index()
+    {
+        $users = User::all();
+
+        return View::make('users/all');
+    }
+
     public function create ()
     {
-        return View::render('users/create');
+        return View::make('users/create');
     }
 
     public function register ()
@@ -38,7 +45,10 @@ class UserController {
         
         $this->mailer->send($email);
 
-        return View::render('users/welcome');
+        return View::make('users/welcome');
 
     }
+
+
+    
 }

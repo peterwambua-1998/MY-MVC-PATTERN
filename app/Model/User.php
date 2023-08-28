@@ -8,17 +8,23 @@ class User extends Model {
 
     public function create(string $name,string $email,bool $isActive = true): int
     {
-        $db = $this->db->getPDO();
         
-        $db->beginTransaction();
+        $builder = $this->db->createQueryBuilder();
 
-        $newUserStmt = $db->prepare(
-            'INSERT INTO users (email, full_name, is_active, created_at) VALUES (?,?,?, NOW())'
-        );
+        $user = $builder->insert('users')
+                        ->values([
+                            'email' => '?',
+                            'full_name' => '?',
+                            'is_active' => '?',
+                            'created_at' => '?',
+                        ])
+                        ->setParameter(0, $email)->setParameter(1, $name)->setParameter(2, $isActive)->setParameter(3, '2023-08-28');
 
-        $newUserStmt->execute([$email, $name, 1]);
-            
+        return (int) $user->executeStatement();
+    }
 
-        return (int) $db->lastInsertId();
+    public static function all() 
+    {
+        
     }
 }

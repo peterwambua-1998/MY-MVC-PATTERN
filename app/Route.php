@@ -29,6 +29,7 @@ class Route {
 
     public function resolve(string $method, string $route)
     {
+        $route = explode('?', $route)[0];
         // 1. is to check if route exists
         $concrete = $this->routes[$method][$route];
 
@@ -55,7 +56,7 @@ class Route {
             }
 
             $class = $this->container->get($class);
-
+            
             return call_user_func_array([$class, $method],[]);
         }
 
