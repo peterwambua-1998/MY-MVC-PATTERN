@@ -2,9 +2,13 @@
 
 namespace App\Model;
 
+use App\App;
 use App\DB;
 
 class Model {
-    public function __construct(protected DB $db) {
+    protected DB $db;
+
+    public function __construct() {
+        $this->db = App::$db;
     }
 }

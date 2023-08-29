@@ -8,6 +8,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mime\Email;
 use App\DB;
+use App\Model\Model;
 use App\Model\User;
 use DateTime;
 
@@ -18,9 +19,9 @@ class UserController {
 
     public function index()
     {
-        $users = User::all();
+        $users = (new User())->all();
 
-        return View::make('users/all');
+        return View::make('users/all',['users' => $users]);
     }
 
     public function create ()
@@ -33,7 +34,7 @@ class UserController {
         $name = $_POST['name'];
         $user_email = $_POST['email'];
 
-        $userID = (new User($this->db))->create($name, $user_email);
+        $userID = (new User())->create($name, $user_email);
 
         $email_page = file_get_contents(__DIR__ . '/../../views/users/email.php');
 

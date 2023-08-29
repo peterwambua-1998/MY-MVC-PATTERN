@@ -37,6 +37,7 @@ $container->set(MailerInterface::class,
 App::create($route, $container);
 
 $route->get('/', [\App\Controller\HomeController::class, 'index']);
+$route->get('/users', [\App\Controller\UserController::class, 'index']);
 $route->get('/create', [\App\Controller\UserController::class, 'create']);
 $route->post('/register', [\App\Controller\UserController::class, 'register']);
 

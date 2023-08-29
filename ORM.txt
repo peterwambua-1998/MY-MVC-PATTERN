@@ -1,0 +1,19 @@
+ORM
+------------------------------------------
+- Object Relational Mapping 
+- its a layer that sits between your application and storage layer like database
+- formal definition of ORM
+    its a technique of converting data between incompatible type systems using OOP
+
+- ORM simply lets us map database records with the relationships for eg to class objects
+- There are several patterns when it comes to ORM
+- two of the most common patterns are:
+    1. Active record - eg: laravel eloquent
+    2. Data mapper - eg: doctraine used by Symfony
+
+DATA MAPPER 
+------------------------------------------
+- Its a layer that simplifies data transfer between in memory objects and persistent storage like
+  database
+- This allows for the persistent layer to be decoupled isolated from the business logic
+- In doctraine ORM the mapping can be done via attributes, annotations, config files or php mappers

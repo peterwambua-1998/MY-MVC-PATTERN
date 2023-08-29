@@ -23,8 +23,10 @@ class User extends Model {
         return (int) $user->executeStatement();
     }
 
-    public static function all() 
+    public function all() 
     {
-        
+        $builder = $this->db->createQueryBuilder();
+        $users = $builder->select('id', 'full_name')->from('users')->fetchAllAssociative();
+        return $users;
     }
 }
