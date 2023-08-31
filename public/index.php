@@ -30,26 +30,32 @@ $connectionParams = [
 
 $entityManager = new EntityManager(DriverManager::getConnection($connectionParams), ORMSetup::createAnnotationMetadataConfiguration([__DIR__.'/../app/Entity']));
 
-$items = [['Item 1', 1, 15],['Item 2', 2,7.5],['Item 3', 4, 3.75]];
+// $items = [['Item 1', 1, 15],['Item 2', 2,7.5],['Item 3', 4, 3.75]];
 
-$invoice = (new Invoice)
-            ->setAmount(45)
-            ->setInvNum(1)
-            ->setStatus('pending')  
-            ->setDate(new DateTime());
+// $invoice = (new Invoice)
+//             ->setAmount(45)
+//             ->setInvNum(1)
+//             ->setStatus('pending')   
+//             ->setDate(new DateTime());
 
-foreach ($items as [$description, $quantity, $unitPrice]) {
-    $item = (new InvoiceItem)
-            ->setDescription($description)
-            ->setQuantity($quantity)
-            ->setUnitPrice($unitPrice);
+// foreach ($items as [$description, $quantity, $unitPrice]) {
+//     $item = (new InvoiceItem)
+//             ->setDescription($description)
+//             ->setQuantity($quantity)
+//             ->setUnitPrice($unitPrice);
 
-    $invoice->addItem($item);
-    $entityManager->persist($item);
+//     $invoice->addItem($item);
+//     $entityManager->persist($item);
 
-}
+// }
 
-$entityManager->persist($invoice);
+// $entityManager->persist($invoice);
+$invoice = $entityManager->find(Invoice::class, 2);
+
+$invoice->setStatus('paid');
+$entityManager->flush();
+
+//echo $entityManager->getUnitOfWork()->size();
 
 // $container = new Container;
 // $route = new Route($container);
