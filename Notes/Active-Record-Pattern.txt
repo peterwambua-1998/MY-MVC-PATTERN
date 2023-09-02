@@ -1,0 +1,6 @@
+ACTIVE RECORD PATTERN 
+----------------------------------------------------------------------
+- approach to access data in a database 
+- a database table or view is wrapped into a class 
+- Thus, an object instance is tied to a single row in the table
+- check wikipedia for more info
