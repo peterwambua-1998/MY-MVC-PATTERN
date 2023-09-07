@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property int $id
  * @property int $inv_num
+ * @property string $status
  */
 class Invoice extends Model 
 {
